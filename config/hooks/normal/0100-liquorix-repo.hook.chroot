@@ -23,7 +23,7 @@ gpg --batch --yes --dearmor \
 
 chmod 0644 /etc/apt/keyrings/liquorix-keyring.gpg
 
-codename="$(. /etc/os-release && printf '%s' "$VERSION_CODENAME")"
+codename="trixie"
 printf '%s\n' \
     "deb [arch=amd64 signed-by=/etc/apt/keyrings/liquorix-keyring.gpg] https://liquorix.net/debian ${codename} main" \
     > /etc/apt/sources.list.d/liquorix.list
