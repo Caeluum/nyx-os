@@ -1,0 +1,38 @@
+#!/bin/sh
+set -eu
+
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get update
+apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg
+
+install -d -m 0755 /etc/apt/keyrings
+
+curl --fail --show-error --location \
+    --retry 5 \
+    --retry-delay 3 \
+    https://liquorix.net/liquorix-keyring.gpg \
+    -o /tmp/liquorix-keyring.gpg
+
+gpg --batch --yes --dearmor \
+    -o /etc/apt/keyrings/liquorix-keyring.gpg \
+    /tmp/liquorix-keyring.gpg
+
+chmod 0644 /etc/apt/keyrings/liquorix-keyring.gpg
+
+codename="$(. /etc/os-release && printf '%s' "$VERSION_CODENAME")"
+printf '%s\n' \
+    "deb [arch=amd64 signed-by=/etc/apt/keyrings/liquorix-keyring.gpg] https://liquorix.net/debian ${codename} main" \
+    > /etc/apt/sources.list.d/liquorix.list
+
+apt-get update
+apt-get install -y --no-install-recommends \
+    linux-image-liquorix-amd64 \
+    linux-headers-liquorix-amd64
+
+rm -f /tmp/liquorix-keyring.gpg
+apt-get clean
+rm -rf /var/lib/apt/lists/*
