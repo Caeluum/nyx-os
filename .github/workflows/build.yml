@@ -36,21 +36,44 @@ jobs:
       - name: Buildar ISO
         run: lb build
 
-      - name: Renomear ISO
+      - name: Preparar ISO e checksum
         run: |
+          set -eu
           mkdir -p out
-          ISO=$(find . -maxdepth 1 -name "*.iso" | head -n1)
-          cp "$ISO" out/nyxos-$(date +%Y%m%d)-amd64.iso
+          ISO="$(find . -maxdepth 1 -type f -name '*.iso' -print -quit)"
+
+          if [ -z "$ISO" ]; then
+            echo "::error::Nenhuma ISO foi gerada"
+            exit 1
+          fi
+
+          OUTPUT="out/nyxos-$(date +%Y%m%d)-amd64.iso"
+          cp "$ISO" "$OUTPUT"
+          sha256sum "$OUTPUT" > "${OUTPUT}.sha256"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: nyxos-iso
-          path: out/*.iso
+          path: |
+            out/*.iso
+            out/*.sha256
           retention-days: 90
 
       - name: Upload GoFile
         run: |
-          apt-get update && apt-get install -y curl
-          ISO=$(find out -name "*.iso" | head -n1)
-          curl -F "file=@$ISO" https://upload.gofile.io/uploadfile
+          set -eu
+          apt-get update
+          apt-get install -y curl
+
+          ISO="$(find out -maxdepth 1 -type f -name '*.iso' -print -quit)"
+
+          if [ -z "$ISO" ]; then
+            echo "::error::Nenhuma ISO encontrada para upload"
+            exit 1
+          fi
+
+          curl --fail --show-error --location \
+            --retry 3 \
+            -F "file=@${ISO}" \
+            https://upload.gofile.io/uploadfile
