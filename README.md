@@ -6,7 +6,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/base-Debian%2013%20Trixie-A81D33?style=flat-square&logo=debian&logoColor=white" alt="Base: Debian 13 Trixie">
   <img src="https://img.shields.io/badge/DE-KDE%20Plasma%206-1D99F3?style=flat-square&logo=kde&logoColor=white" alt="DE: KDE Plasma 6">
-  <img src="https://img.shields.io/badge/kernel-XanMod-2E8B57?style=flat-square&logo=linux&logoColor=white" alt="Kernel: XanMod">
+  <img src="https://img.shields.io/badge/kernel-Liquorix-2E8B57?style=flat-square&logo=linux&logoColor=white" alt="Kernel: Liquorix">
   <img src="https://img.shields.io/badge/build-live--build-c62828?style=flat-square" alt="Build: live-build">
   <img src="https://img.shields.io/badge/installer-Calamares-F9A825?style=flat-square" alt="Installer: Calamares">
   <img src="https://img.shields.io/badge/license-GPLv3-blue?style=flat-square" alt="License: GPLv3">
@@ -29,13 +29,13 @@ O nome vem de **Nyx**, a deusa grega da noite: a ideia é um sistema rápido, di
 | **Base** | Debian 13 (Trixie) | Estável, e já disponibiliza o KDE Plasma 6 diretamente nos repositórios oficiais |
 | **Ferramenta de build** | [`live-build`](https://wiki.debian.org/DebianLive) | Ferramenta oficial do Debian para gerar imagens live/instaláveis — equivalente ao `archiso` no mundo Arch |
 | **Ambiente Desktop** | KDE Plasma 6 | Mantém a identidade visual e de UX do NyxOS |
-| **Kernel** | [XanMod](https://xanmod.org/) | Kernel focado em performance/desktop; a alternativa mais próxima do `linux-cachyos`, já que o scheduler BORE não está disponível nativamente nos repositórios do Debian |
+| **Kernel** | [Liquorix](https://liquorix.net/) | Kernel voltado a responsividade, desktop, multimídia e jogos |
 | **Instalador** | [Calamares](https://calamares.io/) | O mesmo instalador de sempre, agora empacotado e integrado via `apt` em vez de `pacman` |
 
 ## ✨ Principais características
 
 - 🖥️ **KDE Plasma 6** pré-configurado e tematizado com a identidade visual do NyxOS
-- ⚡ **Kernel XanMod** para melhor responsividade em desktop, multimídia e jogos
+- ⚡ **Kernel Liquorix** para melhor responsividade em desktop, multimídia e jogos
 - 🐧 Base **Debian 13 (Trixie)** — estabilidade sem abrir mão de pacotes recentes
 - 🛠️ Build reprodutível via `live-build`, direto a partir deste repositório
 - 💿 Instalação guiada e simples com o **Calamares**
@@ -58,17 +58,16 @@ O nome vem de **Nyx**, a deusa grega da noite: a ideia é um sistema rápido, di
 ## 📁 Estrutura do repositório
 
 ```
-nyxos/
+nyx-os/
+├── auto/                 # Scripts de configuração do live-build
 ├── config/               # Configuração do live-build
-│   ├── package-lists/    # Listas de pacotes (base, kde, xanmod, calamares...)
+│   ├── package-lists/    # Listas de pacotes
 │   ├── includes.chroot/  # Arquivos injetados no sistema final
 │   └── hooks/            # Scripts executados durante o build
-├── branding/              # Wallpapers, tema Plasma, splash screen, logo
-├── calamares/              # Configuração dos módulos do Calamares
-└── docs/                   # Documentação adicional
+├── branding/             # Wallpapers, tema Plasma, splash screen, logo
+├── calamares/            # Configuração dos módulos do Calamares
+└── docs/                 # Documentação adicional
 ```
-
-> Estrutura de referência baseada no padrão do `live-build` — adapte para refletir a organização real do repositório.
 
 ## 🔧 Compilando o NyxOS
 
@@ -84,13 +83,14 @@ sudo apt install live-build git
 ### Build
 
 ```bash
-git clone https://github.com/<seu-usuario>/nyxos.git
-cd nyxos
+git clone https://github.com/xiaowin9556/nyx-os.git
+cd nyx-os
 
 # Limpa builds anteriores (opcional)
 sudo lb clean --purge
 
-# Baixa os pacotes e monta a imagem
+# Configura e monta a imagem
+sudo lb config
 sudo lb build
 ```
 
@@ -108,7 +108,7 @@ As imagens ISO serão publicadas na aba **Releases** deste repositório assim qu
 
 - [ ] Tematização padrão do Plasma 6 (ícones, cursores, splash screen)
 - [ ] Repositório `apt` próprio para atualizações e pacotes do NyxOS
-- [ ] Pipeline de CI para builds automatizadas
+- [x] Pipeline de CI para builds automatizadas
 - [ ] Variantes da ISO (minimal / full)
 
 ## 🤝 Contribuindo
@@ -127,7 +127,7 @@ O NyxOS não existiria sem estes projetos:
 
 - [Debian Project](https://www.debian.org/)
 - [KDE Plasma](https://kde.org/plasma-desktop/)
-- [XanMod Kernel](https://xanmod.org/)
+- [Liquorix Kernel](https://liquorix.net/)
 - [Calamares](https://calamares.io/)
 - [Debian Live / live-build](https://wiki.debian.org/DebianLive)
 
