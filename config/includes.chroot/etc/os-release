@@ -1,1 +1,11 @@
+PRETTY_NAME="NyxOS 13"
+NAME="NyxOS"
+VERSION_ID="13"
+VERSION="13 (Trixie)"
+VERSION_CODENAME=trixie
+ID=nyxos
+ID_LIKE=debian
 LOGO=distributor-logo-nyxos
+HOME_URL="https://github.com/Caeluum/nyx-os/"
+SUPPORT_URL="https://github.com/Caeluum/nyx-os/"
+BUG_REPORT_URL="https://github.com/Caeluum/nyx-os/issues"
