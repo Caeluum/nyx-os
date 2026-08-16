@@ -4,6 +4,7 @@ set -e
 lb config noauto \
     --mode debian \
     --initramfs live-boot \
+    --initsystem systemd \
     --security false \
     --architectures amd64 \
     --linux-packages "none" \
