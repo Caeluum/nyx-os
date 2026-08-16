@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git curl live-build live-config live-boot \
+            git curl live-build live-config live-boot debian-archive-keyring \
             debootstrap squashfs-tools xorriso isolinux syslinux-common \
             dosfstools mtools
 
