@@ -7,41 +7,46 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container:
-      image: debian:trixie
-      options: --privileged
+    name: Build on xiaowin9556_jamanta
+    runs-on: self-hosted
 
     steps:
-      - name: Instalar dependências básicas
+      - name: Preparar workspace
         run: |
-          apt-get update
-          apt-get install -y git sudo
+          sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE" || true
 
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Instalar live-build e ferramentas
+      - name: Instalar dependências
         run: |
-          apt-get install -y live-build live-config live-boot \
+          sudo apt-get update
+          sudo apt-get install -y \
+            git curl live-build live-config live-boot \
             debootstrap squashfs-tools xorriso isolinux syslinux-common \
             dosfstools mtools
 
       - name: Limpar builds anteriores
-        run: lb clean --purge || true
+        run: |
+          sudo lb clean --purge || true
+          rm -rf out
 
       - name: Configurar live-build
         run: lb config
 
       - name: Buildar ISO
-        run: lb build
+        run: sudo lb build
+
+      - name: Corrigir permissões do workspace
+        if: always()
+        run: sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE" || true
 
       - name: Preparar ISO e checksum
         run: |
           set -eu
           mkdir -p out
-          ISO="$(find . -maxdepth 1 -type f -name '*.iso' -print -quit)"
 
+          ISO="$(find . -maxdepth 1 -type f -name '*.iso' -print -quit)"
           if [ -z "$ISO" ]; then
             echo "::error::Nenhuma ISO foi gerada"
             exit 1
@@ -63,11 +68,8 @@ jobs:
       - name: Upload GoFile
         run: |
           set -eu
-          apt-get update
-          apt-get install -y curl
 
           ISO="$(find out -maxdepth 1 -type f -name '*.iso' -print -quit)"
-
           if [ -z "$ISO" ]; then
             echo "::error::Nenhuma ISO encontrada para upload"
             exit 1
