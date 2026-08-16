@@ -6,8 +6,7 @@ lb config noauto \
     --initramfs live-boot \
     --security false \
     --architectures amd64 \
-    --linux-packages "linux-image" \
-    --linux-flavours "amd64" \
+    --linux-packages "none" \
     --distribution trixie \
     --archive-areas "main contrib non-free non-free-firmware" \
     --binary-images iso-hybrid \
