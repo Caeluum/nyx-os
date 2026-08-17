@@ -46,7 +46,18 @@ jobs:
           rm -rf out
 
       - name: Configurar live-build
-        run: lb config
+        run: |
+          set -eu
+          mkdir -p config/archives
+          curl --fail --show-error --location \
+            --retry 5 \
+            --retry-delay 3 \
+            -o config/archives/liquorix.key.chroot \
+            https://liquorix.net/liquorix-keyring.gpg
+          printf '%s\n' \
+            'deb [arch=amd64] https://liquorix.net/debian trixie main' \
+            > config/archives/liquorix.list.chroot
+          lb config
 
       - name: Buildar ISO
         run: sudo lb build
