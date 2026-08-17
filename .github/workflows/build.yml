@@ -24,11 +24,21 @@ jobs:
 
       - name: Instalar dependências
         run: |
+          set -eu
           sudo apt-get update
           sudo apt-get install -y \
-            git curl live-build live-config live-boot debian-archive-keyring \
+            git curl cpio live-config live-boot debian-archive-keyring \
             debootstrap squashfs-tools xorriso isolinux syslinux-common \
             dosfstools mtools
+
+          LIVE_BUILD_DEB="/tmp/live-build_20250505+deb13u1_all.deb"
+          curl --fail --show-error --location \
+            --retry 3 \
+            -o "$LIVE_BUILD_DEB" \
+            "https://deb.debian.org/debian/pool/main/l/live-build/live-build_20250505+deb13u1_all.deb"
+          echo "58e09779881cbcc631c49ceb703413e0247a87db01823e597b2a1c40a2afd8f4  $LIVE_BUILD_DEB" | sha256sum --check
+          sudo dpkg -i "$LIVE_BUILD_DEB"
+          lb --version
 
       - name: Limpar builds anteriores
         run: |
