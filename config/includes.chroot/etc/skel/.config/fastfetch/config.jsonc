@@ -2,11 +2,17 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "chafa",
-    "source": "/usr/share/icons/hicolor/scalable/apps/distributor-logo-nyxos.svg",
-    "width": 28,
-    "height": 14,
+    "source": "/usr/share/icons/hicolor/scalable/apps/distributor-logo-nyxos-white.svg",
+    "width": 20,
+    "height": 10,
     "padding": {
       "right": 2
+    },
+    "chafa": {
+      "fgOnly": true,
+      "canvasMode": "TRUECOLOR",
+      "colorSpace": "RGB",
+      "ditherMode": "NONE"
     }
   },
   "display": {
