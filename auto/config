@@ -7,6 +7,7 @@ lb config noauto \
     --initsystem systemd \
     --security false \
     --architectures amd64 \
+    --debootstrap-options "--include=ca-certificates" \
     --linux-packages "linux-image-liquorix" \
     --linux-flavours "amd64" \
     --distribution trixie \
